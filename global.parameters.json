@@ -1,0 +1,31 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "switzerlandnorth"
+        },
+        "project": {
+            "value": "aiapphosting"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "salt": {
+            "value": "02"
+        },
+        "customVnet": {
+            "value": false
+        },
+        "customVnetName": {
+            "value": ""
+        },
+        "customSubnetName": {
+            "value": ""
+        },
+        "customVnetResourceGroup": {
+            "value": ""
+        }
+    }
+}
