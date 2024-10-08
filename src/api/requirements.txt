@@ -1,0 +1,5 @@
+uvicorn
+fastapi[standard]
+requests
+asyncio
+azure-monitor-opentelemetry

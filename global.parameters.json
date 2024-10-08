@@ -1,4 +1,3 @@
-
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
@@ -26,6 +25,21 @@
         },
         "customVnetResourceGroup": {
             "value": ""
+        },
+        "acrName": {
+            "value": ""
+        },
+        "acrResourceGroup": {
+            "value": ""
+        },
+        "mageNameApi": {
+            "value": "aca-boilerplate-api"
+        },
+        "imageNameBackend": {
+            "value": "aca-boilerplate-backend"
+        },
+        "imageVersion": {
+            "value": "latest"
         }
     }
 }

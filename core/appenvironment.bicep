@@ -48,7 +48,7 @@ resource containerAppEnvInVnet 'Microsoft.App/managedEnvironments@2024-03-01' = 
   }
 }
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' = if(!connectToVnet) {
+resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = if(!connectToVnet) {
   name: name
   location: location
   properties: {
@@ -68,3 +68,4 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' = if(!co
     infrastructureResourceGroup: '${resourceGroup().name}-acainfra'
   }
 }
+

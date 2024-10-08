@@ -22,6 +22,12 @@ param customSubnetName string
 param customVnetResourceGroup string = ''
 
 
+param acrName string = ''
+param acrResourceGroup string = ''
+param imageNameApi string = ''
+param imageNameBackend string = ''
+param imageVersion string = 'latest'
+
 var longName = '${project}-${environment}-${salt}'
 
 resource deploymentResourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -53,5 +59,15 @@ module containerAppsEnvironment 'core/appenvironment.bicep' = {
   }
 }
 
-//output vnetId string = containerAppsEnvironment.outputs.vNetId
-//output subnetId string = containerAppsEnvironment.outputs.vNetSubnetId
+module cosmos 'core/cosmos.bicep' = {
+  name: 'cosmos'
+  scope: deploymentResourceGroup
+  params: {
+    accountName: 'cosmos-${longName}'
+    databaseName: 'repo'
+    containerName: 'items'
+  }
+}
+
+output debug string = 'acrName: ${acrName}, acrResourceGroup: ${acrResourceGroup}, imageNameApi: ${imageNameApi}, imageNameBackend: ${imageNameBackend}, imageVersion: ${imageVersion}'
+

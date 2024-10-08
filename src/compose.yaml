@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  aca-boilerplate-backend:
+    image: aca-boilerplate-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+  aca-boilerplate-api:
+    image: aca-boilerplate-api:latest
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - backend=http://aca-boilerplate-backend
+    depends_on:
+      - aca-boilerplate-backend
