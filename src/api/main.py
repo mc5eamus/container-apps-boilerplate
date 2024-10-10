@@ -1,17 +1,23 @@
 import os
-import random
 from fastapi import FastAPI, Request
 import uvicorn
 import argparse
 import logging
-import time
 import requests
 import asyncio
+from azure.monitor.opentelemetry import configure_azure_monitor
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
+appinsights_connection_string = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING", "")
 
 #take the backend url from the environment variable backend
 backend_url = os.getenv("backend", "http://aca-boilerplate-backend")
 
 app = FastAPI()
+
+FastAPIInstrumentor.instrument_app(app)
+
+configure_azure_monitor( connection_string=appinsights_connection_string,)
 
 logging.getLogger().setLevel(logging.INFO)
 

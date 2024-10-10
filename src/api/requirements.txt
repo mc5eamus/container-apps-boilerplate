@@ -3,3 +3,4 @@ fastapi[standard]
 requests
 asyncio
 azure-monitor-opentelemetry
+opentelemetry-instrumentation-fastapi

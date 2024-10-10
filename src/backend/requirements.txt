@@ -4,6 +4,7 @@ uvicorn
 fastapi[standard]
 requests
 azure-monitor-opentelemetry
+opentelemetry-instrumentation-fastapi
 azure-cosmos
 azure-identity
 aiohttp

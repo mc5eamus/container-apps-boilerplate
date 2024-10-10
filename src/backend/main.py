@@ -7,17 +7,26 @@ import uvicorn
 import argparse
 import logging
 from repo_cosmos import Repo
+from azure.monitor.opentelemetry import configure_azure_monitor
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 dotenv.load_dotenv()
 
 app = FastAPI()
 
+FastAPIInstrumentor.instrument_app(app)
+
 logging.getLogger().setLevel(logging.INFO)
+
 cosmos_endpoint = os.getenv("CosmosEndpoint", "")
 cosmos_database = os.getenv("CosmosDatabase", "")
 cosmos_collection = os.getenv("CosmosCollection", "")
 
+appinsights_connection_string = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING", "")
+
 repo = Repo(endpoint=cosmos_endpoint, database_name=cosmos_database, container_name=cosmos_collection)
+
+configure_azure_monitor( connection_string=appinsights_connection_string,)
 
 @app.post("/repo")
 async def post_summary(request: Request):

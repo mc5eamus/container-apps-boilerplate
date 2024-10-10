@@ -13,6 +13,9 @@ param resources object = {
   cpu: json('.25')
   memory: '.5Gi'
 }
+param concurrentRequestsPerInstance int = 50
+param minReplicas int = 1
+param maxReplicas int = 1
 
 resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
   name: uaiName
@@ -70,8 +73,19 @@ resource application 'Microsoft.App/containerApps@2023-05-01' = {
         }
       ]
       scale: {
-        maxReplicas: 1
-        minReplicas: 1
+        minReplicas: minReplicas
+        maxReplicas: maxReplicas
+        rules: [
+          {
+            name: 'http'
+            http: {
+              metadata: {
+                concurrentRequests: string(concurrentRequestsPerInstance)
+              }
+            }
+          }
+
+        ]
       }
     }
     workloadProfileName: 'Consumption'

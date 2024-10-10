@@ -44,6 +44,11 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' existing
   name: 'aca-${longName}'
 }
 
+resource appInsights 'microsoft.insights/components@2020-02-02' existing = {
+  scope: rg
+  name: 'mon-${longName}'
+}
+
 module uai 'core/identity.bicep' = {
   name: 'uai'
   scope: rg
@@ -120,6 +125,8 @@ module appBackend 'app/app.bicep' = {
     ingressEnabled: true
     ingressExternal: true
     uaiName: uaiWithExtendedAccess.outputs.name
+    concurrentRequestsPerInstance: 50
+    maxReplicas: 25
     environmentVariables: [
       {
         name: 'AZURE_CLIENT_ID'
@@ -136,6 +143,18 @@ module appBackend 'app/app.bicep' = {
       {
         name: 'CosmosContainer'
         value: 'items'
+      }
+      {
+        name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+        value: appInsights.properties.ConnectionString
+      }
+      {
+        name: 'OTEL_RESOURCE_ATTRIBUTES'
+        value: 'service.namespace=containerapps-boilerplate,service.instance.id=backend'
+      }
+      {
+        name: 'OTEL_SERVICE_NAME'
+        value: 'containerapps-boilerplate-backend'
       }
     ]
   }
@@ -157,6 +176,8 @@ module appApi 'app/app.bicep' = {
     daprEnabled: false
     ingressEnabled: true
     uaiName: uaiWithExtendedAccess.outputs.name
+    concurrentRequestsPerInstance: 25
+    maxReplicas: 25
     environmentVariables: [
       {
         name: 'AZURE_CLIENT_ID'
@@ -166,6 +187,18 @@ module appApi 'app/app.bicep' = {
         name: 'backend'
         value: 'https://${imageNameBackend}.${containerAppEnv.properties.defaultDomain}'
       }
+      {
+        name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+        value: appInsights.properties.ConnectionString
+      }
+      {
+        name: 'OTEL_RESOURCE_ATTRIBUTES'
+        value: 'service.namespace=containerapps-boilerplate,service.instance.id=api'
+      }
+      {
+        name: 'OTEL_SERVICE_NAME'
+        value: 'containerapps-boilerplate-api'
+      }      
     ]
   }
   dependsOn: [
