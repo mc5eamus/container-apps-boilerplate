@@ -96,7 +96,7 @@ module roleAssignmentAcr 'core/acrRoleAssignment.bicep' =  {
   name: 'roleAssignment'
   scope: resourceGroup(acrResourceGroup)
   params: {
-    name: 'roleAssignment'
+    name: 'acr-${longName}'
     acrName: acrName
     principalId: uaiWithExtendedAccess.outputs.principalId
   }
